@@ -1,0 +1,19 @@
+# step 1: data collection
+y_boundary: ...
+x_boundary: ... # used to filter images outside the working area
+
+# step 4 and 6: segmentation and feature extraction
+tree_area_dist: ... # determined to ensure each segment contains a single tree and collectively covers most of the input point cloud
+
+expected_trunk_radius: ... # average radius of trunks, should be decided based on the dataset
+expected_mean_tolerance: ... # depends on the accuracy of BEV, smaller when using GT BEV
+
+# step 5 
+offset: ... # set offset x,y,z to pull the point cloud around origin
+
+# step 7: loop alignment
+icp_threshold: ... # vertical correctness - decrease the value if there's only partial overlapping between ground points / significant difference of density between diff. models
+max_tree_pair_dist: ... # horizontal correctness - threshold for tree pairs detection, determined based on the density of trees
+
+# step 8: batch alignment
+similarity_threshold: ... # threshold for cutting edges with low error similarity
