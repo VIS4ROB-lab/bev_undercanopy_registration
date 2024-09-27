@@ -105,7 +105,7 @@ if __name__ == "__main__":
         GEO_REG_PATH = Path(f"{MODEL_DIR}/Model_{idx}/shifted_LV95_model")
         GEO_REG_PATH.mkdir(parents=True, exist_ok=True)
 
-        # Safe txt file of the images with the geo data (Format: image_name1.jpg X1 Y1 Z1)
+        # Save txt file of the images with the geo data (Format: image_name1.jpg X1 Y1 Z1)
         TXT_PATH = Path(f"{GEO_REG_PATH}/ref_im.txt")
         ref_im_data = ["name", "x", "y", "z"]
         df_for_txt = filt_df_cur_batch[ref_im_data]

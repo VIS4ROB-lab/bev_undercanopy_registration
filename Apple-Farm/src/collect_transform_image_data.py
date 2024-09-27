@@ -165,13 +165,17 @@ if __name__ == "__main__":
         choices=["True", "False"],
         help="Indicate if provided images should be clustered into sub-models. True or False",
     )
+    # optional
     parser.add_argument(
-        "-presorted_im",
-        "--presorted_im",
+        "-presorted_im", "--presorted_im",
         help="Path to txt file which indicates which images should be used. List of image names",
-    )  # optional
-    parser.add_argument("-y_boundary", "--y_boundary", help="max_y: remove the cameras outside the working area")
-    parser.add_argument("-x_boundary", "--x_boundary", help="max_x: remove the cameras outside the working area")
+        default=None
+    )  
+    parser.add_argument("-y_boundary", "--y_boundary", help="max_y: remove the images whose camera positions are outside the working area in the y direction")
+    parser.add_argument("-x_boundary", "--x_boundary", help="max_x: remove the images whose camera positions are outside the working area in the x direction")
+    parser.add_argument("-offset","--offset",
+                        type=float, nargs=3, default=[0.0, 0.0, 0.0],
+                        help="Offset to shift the initial point cloud coordinates to avoid excessively large coordinate values.") # This helps in maintaining numerical stability
     # Argparse: Parse arguments
     args = parser.parse_args()
 
@@ -225,15 +229,20 @@ if __name__ == "__main__":
     name = []
 
     # Constants to shift coordinates (else numbers to big)
+    offset = args.offset
+    print(offset)
+    cx = offset[0]
+    cy = offset[1]
+    cz = offset[2]
     # # 2678199.000 1258409.000 445.000
     # cx = 2678199.0
     # cy = 1258409.0
     # cz = 445.000
 
-    # andreas 2684399.0 1251969.0 200.0
-    cx = 2684399.0
-    cy = 1251969.0
-    cz = 200.0
+    # # andreas 2684399.0 1251969.0 200.0
+    # cx = 2684399.0
+    # cy = 1251969.0
+    # cz = 200.0
 
     # Loop through data from images folder
     print("Getting EXIF data...")
@@ -268,7 +277,7 @@ if __name__ == "__main__":
                 # Shift values
                 x_val = LV95_east - cx
                 y_val = LV95_north - cy
-                LV95_h = LV95_h - cz  # cz
+                LV95_h = LV95_h - cz  
 
                 gim_yaw, gim_pitch, gim_roll = get_gimball_yaw_pitch_roll(exif_data)
 

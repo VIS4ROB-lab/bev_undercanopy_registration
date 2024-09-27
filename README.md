@@ -54,11 +54,11 @@ The code has been tested only on Linux. Follow these steps to set up the project
    The overall structure is detailed in `pipeline_demo.py`.
 
    ⭐ **Our pipeline has been tested on 3 datasets:**
-   1. Andreas park zigzag (base - 0130; query - submodels of 0127)
-   2. Cross seasons (base - winter; query - summer)
-   3. Disconnected views (base - winter; query - summer_east, summer_north) 
+   1. Different seasons (base - winter; query - summer)
+   2. Perpendicular Viewpoints (base - winter; query - summer_east, summer_north) 
+   3. Andreas park zigzag (base - 0130; query - submodels of 0127)
 
-   The dataset for case [1](https://drive.google.com/drive/folders/1aaSXf4AurDg1T4Vv0EX6qFYNV47cU4OZ?usp=drive_link), [2 and 3](https://drive.google.com/drive/folders/1cVXYFaNytEoAP8SAZe_uD04fEkttMI32) could be found here. Run the demo scripts `command_andreas.py`, `command_diffseasons.py`, and `command_diffviews.py` for cases 1-3 (Replace file and folder paths with actual paths). The parameters for each demo are selected based on the characteristic of different models, e.g. boundary of working area, sparsity, accuracy of bev (gt or prediction), density of trees etc. For more details, please refer to the notice section below.
+   The dataset for case [1 and 2](https://drive.google.com/drive/folders/1cVXYFaNytEoAP8SAZe_uD04fEkttMI32), [3](https://drive.google.com/drive/folders/1aaSXf4AurDg1T4Vv0EX6qFYNV47cU4OZ?usp=drive_link) could be found here. Run the demo scripts `command_diffseasons.py`, `command_diffviews.py`, and `command_andreas.py` for cases 1-3 (Replace file and folder paths with actual paths). The parameters for each demo are selected based on the characteristic of different models, e.g. boundary of working area, sparsity, accuracy of bev (gt or prediction), density of trees etc. For more details, please refer to the notice section below.
 
 - **Expected output** 
   
@@ -94,7 +94,7 @@ The code has been tested only on Linux. Follow these steps to set up the project
 ## Step 3: GPS alignment
 - `transform_shifted_LV95.py`
 - Transform the reconstructed sparse point cloud to shifted LV95 coordinate system using colmap model aligner (work with colmap 3.8).
-- Then generate the .txt files for visualization.
+- Then generate the .txt files for visualization. (You can find `plot.txt` and `cam_extracted_m0.txt` in the `shifted_LV95_model_txt` folder, and visualize them in CloudCompare to view the point cloud and camera poses.)
 
 ## 🔍 Checking Step: camera sequence scale checking
 - `camera_sequence_cut.py`
@@ -103,9 +103,9 @@ The code has been tested only on Linux. Follow these steps to set up the project
 
 ## Step 4: Tree Position Extraction from BEV, Tree Area Segmentation, and Ground Extraction
 1. `tree_positions.py`
-   - Choose gt or predicted bev; detect the blobs and convert the detected centers into 3d coordinate.
+   - Detect the blobs from BEV and convert the detected centers into 3d coordinate. The final extracted tree positions `tree_positions.txt` can be found in the file `tree_positions.txt`, located in the folder `tree_positions_shifted_LV95`.
 2. `tree_area_segmentation.py`
-   - Segment an area around each tree position from BEV.
+   - Segment an area around each tree position from BEV. All segments can be found in the folder `Tree_Segmentation`.
 3. `Gr_Ex_heightslice.py`
    - Pre-processing; slicing and gaussian fitting; post-processing.
 

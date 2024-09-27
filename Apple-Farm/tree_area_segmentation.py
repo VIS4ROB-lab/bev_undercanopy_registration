@@ -17,14 +17,11 @@ if __name__ == "__main__":
     # Argparse: Add arguments
     parser.add_argument(dest="project_path", help="Path to the project folder, containing Models/Model_i folders")
     parser.add_argument(
-        "-tree_area_dist",
-        "--tree_area_dist",
-        default="6.0",
+        "-tree_area_dist", "--tree_area_dist", default="6.0",
         help="The distance of segment boundary to the tree center. Default: 6.0",
     )
     parser.add_argument(
-        "-removing_tree_radius",
-        default="2.0",
+        "-removing_tree_radius", default="2.0",
         help="The radius of the areas within each tree segment where other trees will be removed. Default: 2.0",
     )
     # Argparse: Parse arguments

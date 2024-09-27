@@ -1,0 +1,21 @@
+{
+    "create_image_batch_model0_command": {
+        "cluster_images": "False",
+        "offset":[2684399.0, 1251969.0, 200.0]
+    },
+    "create_image_batch_model1_command": {
+        "cluster_images": "False",
+        "offset":[2684399.0, 1251969.0, 200.0]
+    },
+    "create_image_batch_model2_command": {
+        "cluster_images": "False",
+        "offset":[2684399.0, 1251969.0, 200.0]
+    },
+    "tree_positions_comand":{
+        "cluster_rad": 2.0
+    },
+    "tree_segment_command":{
+        "tree_area_dist": 8.0,
+        "removing_tree_radius": 2.0
+    }
+}
