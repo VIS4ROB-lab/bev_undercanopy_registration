@@ -230,7 +230,7 @@ if __name__ == "__main__":
 
     # Constants to shift coordinates (else numbers to big)
     offset = args.offset
-    print(offset)
+    # print(offset)
     cx = offset[0]
     cy = offset[1]
     cz = offset[2]

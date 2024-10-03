@@ -15,7 +15,7 @@ import pycolmap
 from subprocess import call
 from scipy.spatial.transform import Rotation as R
 import re
-from src.colmap_vidual import colmap_to_txt
+from colmap_vidual import colmap_to_txt
 
 
 def plot_points(points, ax, color, marker):
@@ -77,8 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("scaling", type=bool, default=True, help="transformation calculation: scaling or not")
 
     parser.add_argument(
-        "-max_tree_pair_dist",
-        "--max_tree_pair_dist",
+        "-max_tree_pair_dist", "--max_tree_pair_dist",
         default="4.0",
         help="Max distance at which corresponding tree in other model should be searched. Default: 3.0",
     )

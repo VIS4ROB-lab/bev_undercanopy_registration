@@ -265,6 +265,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_path", type=Path, default=Path("data/"))
     parser.add_argument("--output_path", type=Path, default=Path("./outputs/"))
+    parser.add_argument("--nr_models", type=int, default=2)
     args = parser.parse_args()
     DATA_PATH = f"{args.data_path}"
     OUTPUT_PLOT = Path(f"{args.output_path}/Figures")
@@ -278,7 +279,7 @@ if __name__ == "__main__":
     OUTPUT_BATCH_PLOT = Path(f"{args.output_path}/Figures/batches_plot")
     OUTPUT_BATCH_PLOT.mkdir(parents=True, exist_ok=True)
 
-    nr_models = 2 #set the number of models
+    nr_models = args.nr_models #set the number of models
 
     # reconstruction(lower bound)
     for idx in range(1, nr_models):
@@ -316,23 +317,22 @@ if __name__ == "__main__":
             f'{OUTPUT_PLOT}/loop_recalls_m{idx}.png',
             f'{OUTPUT_PLOT}/loop_boxplot_m{idx}')
 
-    # loop process
-    for i in [1,2,5]: #1,2,5,10
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m1.txt',
-            f'{DATA_PATH}/middles/cam_eval_m1_middle{i}_V.txt',
-            f'{OUTPUT_MIDDLE}/cam_errors_m1_gt_middle{i}_V.txt', 0,
-            f'{OUTPUT_MIDDLE_PLOT}/recalls_m1_middle{i}_V.png',
-            f'{OUTPUT_MIDDLE_PLOT}/boxplot_m1_middle{i}_V')
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m1.txt',
-            f'{DATA_PATH}/middles/cam_eval_m1_middle{i}_H.txt',
-            f'{OUTPUT_MIDDLE}/cam_errors_m1_gt_middle{i}_H.txt', 0,
-            f'{OUTPUT_MIDDLE_PLOT}/recalls_m1_middle{i}_H.png',
-            f'{OUTPUT_MIDDLE_PLOT}/boxplot_m1_middle{i}_H')
+    # # -- loop process
+    # for i in [1,2]: #1,2,4
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m1.txt',
+    #         f'{DATA_PATH}/middles/cam_eval_m1_middle{i}_V.txt',
+    #         f'{OUTPUT_MIDDLE}/cam_errors_m1_gt_middle{i}_V.txt', 0,
+    #         f'{OUTPUT_MIDDLE_PLOT}/recalls_m1_middle{i}_V.png',
+    #         f'{OUTPUT_MIDDLE_PLOT}/boxplot_m1_middle{i}_V')
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m1.txt',
+    #         f'{DATA_PATH}/middles/cam_eval_m1_middle{i}_H.txt',
+    #         f'{OUTPUT_MIDDLE}/cam_errors_m1_gt_middle{i}_H.txt', 0,
+    #         f'{OUTPUT_MIDDLE_PLOT}/recalls_m1_middle{i}_H.png',
+    #         f'{OUTPUT_MIDDLE_PLOT}/boxplot_m1_middle{i}_H')
 
-    # # batch process & compare
-    # nr_batches = 4
+    # # -- batch process & compare
     # for i in range(nr_batches):
     #     evaluate(
     #     f'{DATA_PATH}/cam_gt_m1.txt',
@@ -349,57 +349,59 @@ if __name__ == "__main__":
     #     f'{OUTPUT_BATCH_PLOT}/final_batch{i}_recalls_m1.png',
     #     f'{OUTPUT_BATCH_PLOT}/final_batch{i}_boxplot_m1')
 
-    # # batch_entire_final
-    for idx in range(1, nr_models):
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m{idx}.txt',
-            f'{DATA_PATH}/eval_m{idx}_batch_aligned.txt',
-            f'{args.output_path}/batchalign_cam_errors_m{idx}_gt.txt', 0,
-            f'{OUTPUT_PLOT}/batch_recalls_m{idx}.png',
-            f'{OUTPUT_PLOT}/batch_boxplot_m{idx}')
 
-    # # method comparison_ ICP
-    for idx in range(1, nr_models):
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m{idx}.txt',
-            f'{DATA_PATH}/cam_eval_m{idx}_ICP.txt',
-            f'{args.output_path}/ICP_cam_errors_m{idx}_gt.txt', 0,
-            f'{OUTPUT_PLOT}/ICP_recalls_m{idx}.png',
-            f'{OUTPUT_PLOT}/ICP_boxplot_m{idx}')
+    # # # ----- If needed: SOTA methods -----
+    # # # batch_entire_final
+    # for idx in range(1, nr_models):
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m{idx}.txt',
+    #         f'{DATA_PATH}/eval_m{idx}_batch_aligned.txt',
+    #         f'{args.output_path}/batchalign_cam_errors_m{idx}_gt.txt', 0,
+    #         f'{OUTPUT_PLOT}/batch_recalls_m{idx}.png',
+    #         f'{OUTPUT_PLOT}/batch_boxplot_m{idx}')
 
-    # # method comparison_FGR
-    for idx in range(1, nr_models):
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m{idx}.txt',
-            f'{DATA_PATH}/cam_eval_m{idx}_FGR.txt',
-            f'{args.output_path}/FGR_cam_errors_m{idx}_gt.txt', 0,
-            f'{OUTPUT_PLOT}/FGR_recalls_m{idx}.png',
-            f'{OUTPUT_PLOT}/FGR_boxplot_m{idx}')
+    # # # method comparison_ ICP
+    # for idx in range(1, nr_models):
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m{idx}.txt',
+    #         f'{DATA_PATH}/cam_eval_m{idx}_ICP.txt',
+    #         f'{args.output_path}/ICP_cam_errors_m{idx}_gt.txt', 0,
+    #         f'{OUTPUT_PLOT}/ICP_recalls_m{idx}.png',
+    #         f'{OUTPUT_PLOT}/ICP_boxplot_m{idx}')
 
-    # # method comparison_FRICP
-    for idx in range(1, nr_models):
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m{idx}.txt',
-            f'{DATA_PATH}/fastICP_camera_extracted_m{idx}.txt', #_bd
-            f'{args.output_path}/fastICP_cam_errors_m{idx}.txt', 0,
-            f'{OUTPUT_PLOT}/fastICP_recalls_m{idx}.png',
-            f'{OUTPUT_PLOT}/fastICP_boxplot_m{idx}')
+    # # # method comparison_FGR
+    # for idx in range(1, nr_models):
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m{idx}.txt',
+    #         f'{DATA_PATH}/cam_eval_m{idx}_FGR.txt',
+    #         f'{args.output_path}/FGR_cam_errors_m{idx}_gt.txt', 0,
+    #         f'{OUTPUT_PLOT}/FGR_recalls_m{idx}.png',
+    #         f'{OUTPUT_PLOT}/FGR_boxplot_m{idx}')
 
-    for idx in range(1, nr_models):
-        evaluate(
-            f'{DATA_PATH}/cam_gt_m{idx}.txt',
-            f'{DATA_PATH}/robustICP_camera_extracted_m{idx}.txt', #_bd
-            f'{args.output_path}/robustICP_bd_cam_errors_m{idx}.txt', 0,
-            f'{OUTPUT_PLOT}/robustICP_bd_recalls_m{idx}.png',
-            f'{OUTPUT_PLOT}/robustICP_bd_boxplot_m{idx}')
+    # # # method comparison_FRICP
+    # for idx in range(1, nr_models):
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m{idx}.txt',
+    #         f'{DATA_PATH}/fastICP_camera_extracted_m{idx}.txt', #_bd
+    #         f'{args.output_path}/fastICP_cam_errors_m{idx}.txt', 0,
+    #         f'{OUTPUT_PLOT}/fastICP_recalls_m{idx}.png',
+    #         f'{OUTPUT_PLOT}/fastICP_boxplot_m{idx}')
 
-    # method comparison_TEASER
-    for idx in range(1, nr_models):
-        evaluate(
-            f"{DATA_PATH}/cam_gt_m{idx}.txt",
-            f"{DATA_PATH}/teaser_bd_camera_extracted_m{idx}.txt",
-            f"{args.output_path}/Teaser_bd_cam_errors_m{idx}.txt",
-            0,
-            f"{OUTPUT_PLOT}/Teaser_bd_recalls_m{idx}.png",
-            f"{OUTPUT_PLOT}/Teaser_bd_boxplot_m{idx}",
-        )
+    # for idx in range(1, nr_models):
+    #     evaluate(
+    #         f'{DATA_PATH}/cam_gt_m{idx}.txt',
+    #         f'{DATA_PATH}/robustICP_camera_extracted_m{idx}.txt', #_bd
+    #         f'{args.output_path}/robustICP_bd_cam_errors_m{idx}.txt', 0,
+    #         f'{OUTPUT_PLOT}/robustICP_bd_recalls_m{idx}.png',
+    #         f'{OUTPUT_PLOT}/robustICP_bd_boxplot_m{idx}')
+
+    # # method comparison_TEASER
+    # for idx in range(1, nr_models):
+    #     evaluate(
+    #         f"{DATA_PATH}/cam_gt_m{idx}.txt",
+    #         f"{DATA_PATH}/teaser_bd_camera_extracted_m{idx}.txt",
+    #         f"{args.output_path}/Teaser_bd_cam_errors_m{idx}.txt",
+    #         0,
+    #         f"{OUTPUT_PLOT}/Teaser_bd_recalls_m{idx}.png",
+    #         f"{OUTPUT_PLOT}/Teaser_bd_boxplot_m{idx}",
+    #     )

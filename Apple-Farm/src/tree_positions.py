@@ -235,8 +235,7 @@ if __name__ == "__main__":
         help="Path to folder that contains bird eye view (BEV) predictions. If multiple provide them in the order of the models they belong to (Path/to/Model_0 Path/to/Model_2 ...)",
     )
     parser.add_argument(
-        "-cluster_rad",
-        "--cluster_rad",
+        "-cluster_rad", "--cluster_rad",
         default="2.0",
         help="Max radius at which trees should be considered as the same tree. Default: 2.0",
     )

@@ -1,21 +1,45 @@
 {
+    "offset": [2684399.0, 1251969.0, 200.0],
+    "nr_models": 3,
+
+    
     "create_image_batch_model0_command": {
-        "cluster_images": "False",
-        "offset":[2684399.0, 1251969.0, 200.0]
+        "cluster_images": "False"
     },
     "create_image_batch_model1_command": {
-        "cluster_images": "False",
-        "offset":[2684399.0, 1251969.0, 200.0]
+        "cluster_images": "False"
     },
     "create_image_batch_model2_command": {
-        "cluster_images": "False",
-        "offset":[2684399.0, 1251969.0, 200.0]
+        "cluster_images": "False"
     },
     "tree_positions_comand":{
         "cluster_rad": 2.0
     },
     "tree_segment_command":{
-        "tree_area_dist": 8.0,
-        "removing_tree_radius": 2.0
+        "tree_area_dist":8.0,  
+        "removing_tree_radius": 2
+    }, 
+    "Ground_Extraction_command":{
+        "slice_interval": 0.4,
+        "expected_mean_tolerance": 2.5
+    },
+    "Further_Tree_segment_command":{
+        "tree_area_dist": 7.0
+    },
+    "Further_Ground_Extraction_command":{
+        "slice_interval": 0.3
+    },
+    "ICP_vertical_command":{
+        "icp_threshold":1
+    },
+    "Horizontal_correctness_command":{
+        "max_tree_pair_dist":2
+    },
+    "batch_alignment_command":{},
+    "Batch_Horizontal_correctness_command":{
+        "ver_ignore": true,
+        "hor_ignore": false,
+        "max_tree_pair_dist": 1.5
     }
 }
+

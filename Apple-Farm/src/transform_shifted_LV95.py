@@ -6,7 +6,7 @@ from subprocess import call, run
 import shutil
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from src.colmap_vidual import colmap_to_txt
+from colmap_vidual import colmap_to_txt
 
 
 def read_used_names(PATH_MODEL, COLMAP):

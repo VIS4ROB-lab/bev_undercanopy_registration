@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument(dest="project_path", help="Path to the project folder, containing Models/Model_i folders")
     parser.add_argument("-tree_area_dist", "--tree_area_dist", default=6.0, help="distance to the tree center")
     parser.add_argument(
-        "-removing_tree_radius",
+        "-removing_tree_radius", "--removing_tree_radius",
         default="2.0",
         help="The radius of the areas within each tree segment where other trees will be removed.",
     )

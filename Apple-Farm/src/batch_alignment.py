@@ -9,7 +9,7 @@ import pycolmap
 from scipy.spatial.transform import Rotation as R
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
-from src.colmap_vidual import colmap_to_txt
+from colmap_vidual import colmap_to_txt
 
 
 def plot_points(points, ax, color, marker):
@@ -127,8 +127,7 @@ if __name__ == "__main__":
     parser.add_argument("-ver_ignore", "--ver_ignore", default=False, help="vertical_trans or not")
     parser.add_argument("-hor_ignore", "--hor_ignore", default=False, help="vertical_trans or not")
     parser.add_argument(
-        "-max_tree_pair_dist",
-        "--max_tree_pair_dist",
+        "-max_tree_pair_dist", "--max_tree_pair_dist",
         default=0.5,
         help="Max distance at which corresponding tree in other model should be searched. Default: 3.0",
     )

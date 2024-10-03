@@ -88,6 +88,7 @@ The code has been tested only on Linux. Follow these steps to set up the project
 - **Note**: This file needs to be first deleted and then regenerated if you want to start from label-model0 again.
 
 ## Step 2: Colmap Reconstruction
+- This process may take several hours. Skip this step if the point cloud is already provided.
 - `colmap_cli_pipeline.py`
 - This step will generate a sparse point cloud (`Models/Model_idx/sparse` with `database.db`) for each model.
 
@@ -114,7 +115,8 @@ The code has been tested only on Linux. Follow these steps to set up the project
    - Preparing the gt camera poses for each model given image lists. -->
 `estimation_LV95_gt_trans.py`
    - Preparing the gt camera poses for each model given image lists. (# offset recommended: apple farm [2678199.0, 1258409.0, 445.000]; andreas [2684399.0 1251969.0 200.0])
-   - Transform initial models (LV95) to the GT coordinate (will be used to evaluate reconstruction error), save the transformation matrix for the base model, and then transform all query models using the saved transformation matrix of the base model (so that the models could be directly compared with GT after alignment) for evaluation later.
+   - Transform initial models (LV95) to the GT coordinate (will be used to evaluate reconstruction error), save the transformation matrix for the base model, and then transform all query models using the saved transformation matrix of the base model (so that the models could be directly compared with GT after alignment) for evaluation later. 
+   - In the following steps, align GTAlign_Init_Model_1, GTAlign_Init_Model_2, ..., to GT_Model_0.
 
 ## Step 6: Initial Alignment (ground of Query Models wrt. ground of Base Model)
 1. `initial_alignment.py`

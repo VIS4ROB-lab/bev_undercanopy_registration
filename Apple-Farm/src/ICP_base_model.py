@@ -10,7 +10,7 @@ import glob
 import matplotlib.pyplot as plt
 import shutil
 from scipy.spatial.transform import Rotation as R
-from src.colmap_vidual import colmap_to_txt
+from colmap_vidual import colmap_to_txt
 
 
 def read_points(file_path):

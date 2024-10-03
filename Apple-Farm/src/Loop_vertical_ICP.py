@@ -12,7 +12,7 @@ from scipy.spatial.transform import Rotation as R
 from shapely.geometry import Polygon, Point
 import re
 import copy
-from src.colmap_vidual import colmap_to_txt
+from colmap_vidual import colmap_to_txt
 
 
 def read_point_cloud_2d(path):
