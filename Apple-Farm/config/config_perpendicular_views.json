@@ -1,0 +1,46 @@
+{
+    "offset": [2678199.000, 1258409.000, 445.000],
+    "nr_models": 3,
+
+    
+    "create_image_batch_model0_command": {
+        "cluster_images": "False"
+    },
+    "create_image_batch_model1_command": {
+        "cluster_images": "False"
+    },
+    "create_image_batch_model2_command": {
+        "cluster_images": "False"
+    },
+    "tree_positions_comand":{
+
+    },
+    "tree_segment_command":{
+        "tree_area_dist":8.0
+    }, 
+    "Ground_Extraction_command":{
+        "center_area": 4,
+        "expected_mean_tolerance": 2.5
+    },
+    "Further_Tree_segment_command":{
+        "tree_area_dist": 8.0
+    },
+    "Further_Ground_Extraction_command":{
+        "slice_interval": 0.3,
+        "expected_mean_tolerance":0.6
+    },
+    "ICP_vertical_command":{
+        "icp_threshold":0.5
+    },
+    "Horizontal_correctness_command":{
+        "max_tree_pair_dist":4
+    },
+    "batch_alignment_command":{
+        "similarity_threshold":0.6
+    },
+    "Batch_Horizontal_correctness_command":{
+        "ver_ignore": true,
+        "hor_ignore": false
+    }
+}
+

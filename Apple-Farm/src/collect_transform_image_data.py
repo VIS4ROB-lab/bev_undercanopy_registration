@@ -234,15 +234,7 @@ if __name__ == "__main__":
     cx = offset[0]
     cy = offset[1]
     cz = offset[2]
-    # # 2678199.000 1258409.000 445.000
-    # cx = 2678199.0
-    # cy = 1258409.0
-    # cz = 445.000
 
-    # # andreas 2684399.0 1251969.0 200.0
-    # cx = 2684399.0
-    # cy = 1251969.0
-    # cz = 200.0
 
     # Loop through data from images folder
     print("Getting EXIF data...")

@@ -37,28 +37,51 @@ The code has been tested only on Linux. Follow these steps to set up the project
    We need to prepare a project folder to store all outputs, images folders to store iamges sequence, images lists, BEV folders to save BEV images and GT_params for evaluation. The structure is recommended to look as follows:
    ```yaml
    case_name:
-   ├──data:	
+   ├──Data_name:	
    │    ├──base_model:
    │    |   ├──BEV
    │    |   ├──images
    │    │   ├──image_list.txt
    │    │   └──GT_params
    │    └──query_models:
-   │        └──....
+   │        └──...
    │
-   └──project_name          
+   ├──Project_name 
+   │    ├──Models: 
+   │    |   ├──Model_0 (reference model)
+   │    |   |   ├──sparse (point cloud, if provided)
+   │    |   |   └──...
+   │    |   ├──Model_1 (query model)
+   │    |   |   ├──sparse (point cloud, if provided)
+   │    |   |   └──...
+   │    │   └──...
+   │    └──Images_LV95_batches.csv        
    ```
 
 - **Demo**
-   
-   The overall structure is detailed in `pipeline_demo.py`.
 
    ⭐ **Our pipeline has been tested on 3 datasets:**
-   1. Different seasons (base - winter; query - summer)
-   2. Perpendicular Viewpoints (base - winter; query - summer_east, summer_north) 
-   3. Andreas park zigzag (base - 0130; query - submodels of 0127)
 
-   The dataset for case [1 and 2](https://drive.google.com/drive/folders/1cVXYFaNytEoAP8SAZe_uD04fEkttMI32), [3](https://drive.google.com/drive/folders/1aaSXf4AurDg1T4Vv0EX6qFYNV47cU4OZ?usp=drive_link) could be found here. Run the demo scripts `command_diffseasons.py`, `command_diffviews.py`, and `command_andreas.py` for cases 1-3 (Replace file and folder paths with actual paths). The parameters for each demo are selected based on the characteristic of different models, e.g. boundary of working area, sparsity, accuracy of bev (gt or prediction), density of trees etc. For more details, please refer to the notice section below.
+    1. **Different Seasons** (base: winter; query: summer):  
+       Script: `command_diffseasons.py` (Config: `config_diffseasons.json`)
+       
+    2. **Perpendicular Viewpoints** (base: winter; query: summer_east, summer_north):  
+       Script: `command_perpendicular_views.py` (Config: `config_perpendicular_views.json`)
+       
+    3. **Andreas Park Zigzag** (base: 0130; query: submodels of 0127):  
+       Script: `command_andreas.py` (Config: `config_andreas.json`)
+
+    You can find the datasets here:  
+    - [Datasets for cases 1 and 2](https://drive.google.com/drive/folders/1cVXYFaNytEoAP8SAZe_uD04fEkttMI32)  
+    - [Dataset for case 3](https://drive.google.com/drive/folders/1aaSXf4AurDg1T4Vv0EX6qFYNV47cU4OZ?usp=drive_link)
+
+    **Instructions**
+
+    Please download the datasets and organize them according to the format above. Run the demo scripts `command_diffseasons.py`, `command_diffviews.py`, and `command_andreas.py` for cases 1-3 (Replace file and folder paths with actual paths).
+   
+    The parameters for each demo are selected based on the characteristic of different models, e.g. boundary of working area, sparsity, accuracy of bev (gt or prediction), density of trees etc. For more details, please refer to the notice section below.
+
+   ⭐ The overall structure is demonstrated in `pipeline_demo.py`.
 
 - **Expected output** 
   

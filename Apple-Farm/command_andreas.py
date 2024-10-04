@@ -9,25 +9,25 @@ import json
 ## zigzag
 # Paths for local:
 # INPUT HERE THE PATH THE TO YOUR PROJECT FOLDER (create a folder where you want the output of this pipeline to be stored)
-PROJECT_PATH = "/home/zjw/SP/previous/case4"
+PROJECT_PATH = "Dataset/Case_Opposite_View_andreas/Project_andreas"
 
 # Model_0: 0130
-IMAGE_PATH_0 = "/home/zjw/SP/case3/dataset_andreas_park/andreas-park-20240130-images"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 1
-IM_LIST_0 = "/home/zjw/SP/case3/dataset_andreas_park/image_list_30zigzag.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
-gt_cam_file_0 = f"/home/zjw/SP/case3/dataset_andreas_park/andreas-park-20240130-params/params/andreas-park-20240130-all_calibrated_external_camera_parameters.txt"
-BIRD_EYE_PATH_0 = "/home/zjw/SP/case3/dataset_andreas_park/bev_ground_truth_andreas_3001/ground_truth"  # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL
+IMAGE_PATH_0 = "Dataset/Case_Opposite_View_andreas/Data_andreas/andreas-park-20240130-images"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 1
+IM_LIST_0 = "Dataset/Case_Opposite_View_andreas/Data_andreas/image_list_30zigzag.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
+gt_cam_file_0 = f"Dataset/Case_Opposite_View_andreas/Data_andreas/andreas-park-20240130-params/params/andreas-park-20240130-all_calibrated_external_camera_parameters.txt"
+BIRD_EYE_PATH_0 = "Dataset/Case_Opposite_View_andreas/Data_andreas/bev_ground_truth_andreas_3001/ground_truth"  # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL
 # BIRD_EYE_PATH_0 = "dataset_andreas_park/dynamic_kastelhof_traning_eval_andreas3001/dynamic_kastelhof_traning" # kastelhof training
 
 # Model_1,2: 0127
-IMAGE_PATH_1 = "/home/zjw/SP/case3/dataset_andreas_park/andreas-park-20240127"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 0
-IM_LIST_1 = "/home/zjw/SP/case3/dataset_andreas_park/image_list_27zigzag_1.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
-gt_cam_file_1 = f"/home/zjw/SP/case3/dataset_andreas_park/andreas-park-20240127-params/andreas-park-20240127-all_calibrated_external_camera_parameters.txt"
+IMAGE_PATH_1 = "Dataset/Case_Opposite_View_andreas/Data_andreas/andreas-park-20240127"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 0
+IM_LIST_1 = "Dataset/Case_Opposite_View_andreas/Data_andreas/image_list_27zigzag_1.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
+gt_cam_file_1 = f"Dataset/Case_Opposite_View_andreas/Data_andreas/andreas-park-20240127-params/andreas-park-20240127-all_calibrated_external_camera_parameters.txt"
 # BIRD_EYE_PATH_1 = "dataset_andreas_park/bev_ground_truth_andreas_2701/ground_truth" # GT BEV
-BIRD_EYE_PATH_1 = "/home/zjw/SP/case3/dataset_andreas_park/dynamic_andreas3001_training_eval_andreas2701/dynamic_3001_training"  # Andreas training
+BIRD_EYE_PATH_1 = "Dataset/Case_Opposite_View_andreas/Data_andreas/dynamic_andreas3001_training_eval_andreas2701/dynamic_3001_training"  # Andreas training
 # BIRD_EYE_PATH_1 = "dataset_andreas_park/dynamic_kastelhof_traning_eval_andreas2701/dynamic_kastelhof_traning" # kastelhof training
 
-IMAGE_PATH_2 = "/home/zjw/SP/case3/dataset_andreas_park/andreas-park-20240127"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 0
-IM_LIST_2 = "/home/zjw/SP/case3/dataset_andreas_park/image_list_27zigzag_2.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
+IMAGE_PATH_2 = "Dataset/Case_Opposite_View_andreas/Data_andreas/andreas-park-20240127"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 0
+IM_LIST_2 = "Dataset/Case_Opposite_View_andreas/Data_andreas/image_list_27zigzag_2.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
 gt_cam_file_2 = gt_cam_file_1
 BIRD_EYE_PATH_2 = BIRD_EYE_PATH_1
 
@@ -71,7 +71,9 @@ create_image_batch_model0_command = [
     f"{IMAGE_PATH_0}",
     config['create_image_batch_model0_command']['cluster_images'],
 ] +(["-presorted_im", f"{IM_LIST_0}"] if IM_LIST_0 else []) \
-  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) # Optional offset
+  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) \
+  + (["-y_boundary", f"{config['create_image_batch_model0_command']['y_boundary']}"] if 'y_boundary' in config['create_image_batch_model0_command'] else []) \
+  + (["-x_boundary", f"{config['create_image_batch_model0_command']['x_boundary']}"] if 'x_boundary' in config['create_image_batch_model0_command'] else [])
 call(create_image_batch_model0_command)
 
 # MODEL_1
@@ -82,7 +84,9 @@ create_image_batch_model1_command = [
     f"{IMAGE_PATH_1}",
     config['create_image_batch_model1_command']['cluster_images'],
 ] +(["-presorted_im", f"{IM_LIST_1}"] if IM_LIST_1 else []) \
-  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) # Optional offset
+  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) \
+  + (["-y_boundary", f"{config['create_image_batch_model0_command']['y_boundary']}"] if 'y_boundary' in config['create_image_batch_model0_command'] else []) \
+  + (["-x_boundary", f"{config['create_image_batch_model0_command']['x_boundary']}"] if 'x_boundary' in config['create_image_batch_model0_command'] else [])
 call(create_image_batch_model1_command)
 
 # MODEL_2
@@ -93,8 +97,11 @@ create_image_batch_model2_command = [
     f"{IMAGE_PATH_2}",
     config['create_image_batch_model2_command']['cluster_images'],
 ] +(["-presorted_im", f"{IM_LIST_2}"] if IM_LIST_2 else []) \
-  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) # Optional offset
+  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) \
+  + (["-y_boundary", f"{config['create_image_batch_model0_command']['y_boundary']}"] if 'y_boundary' in config['create_image_batch_model0_command'] else []) \
+  + (["-x_boundary", f"{config['create_image_batch_model0_command']['x_boundary']}"] if 'x_boundary' in config['create_image_batch_model0_command'] else [])
 call(create_image_batch_model2_command)
+
 
 # # --- (Skip this step given the point cloud is already provided.) 2. Colmap CLI pipeline sparse
 # colmap_cli_pipeline_command = [

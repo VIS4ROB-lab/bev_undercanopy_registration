@@ -2,34 +2,42 @@
 
 from subprocess import call
 from pathlib import Path
-import os
 import json
+import os
 
 # ----------------------------------------------------------------------------
 #                                    Paths
 # ----------------------------------------------------------------------------
-PROJECT_PATH = f" "  # INPUT HERE THE PATH THE TO YOUR PROJECT FOLDER (create a folder where you want the output of this pipeline to be stored)
+# Paths for local:
+PROJECT_PATH = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Project_diffviews"  # INPUT HERE THE PATH THE TO YOUR PROJECT FOLDER (create a folder where you want the output of this pipeline to be stored)
 
-# Model_0
-IMAGE_PATH_0 = f" "  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 0
-IM_LIST_0 = f" .txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
-gt_cam_file_0 = f" .txt"  # INPUT HERE THE PATH TO THE GT FROM PIX4D
-BIRD_EYE_PATH_0 = f" "  # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL 0 (GT)
+# Model_0: winter
+IMAGE_PATH_0 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/winter/images_winter_all"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 0
+IM_LIST_0 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/winter/image_list_winter.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
+gt_cam_file_0 = f"/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/winter/applefarm-230209_merge_v9_calibrated_external_camera_parameters.txt"
+BIRD_EYE_PATH_0 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/winter/BEV_Kastelhof_Winter_gt"  # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL 0
+# BIRD_EYE_PATH_0 = f'/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/winter/BEV_Winter_oringinal'  # ORIGINAL
 
-# Model_1
-IMAGE_PATH_1 = f" "  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 1
-IM_LIST_1 = f" .txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
-gt_cam_file_1 = f" .txt"
-BIRD_EYE_PATH_1 = f" "  # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL 1 (Predicted)
+# Model_1: summer_east
+IMAGE_PATH_1 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/image_summer_all"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 1
+IM_LIST_1 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/summer_east/image_list_east.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
+gt_cam_file_1 = f"/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/summer_east/apple-farm-230209-east_calibrated_external_camera_parameters.txt"
+# BIRD_EYE_PATH_1 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/summer_east/BEV_Kastelhof_Summer_east_gt" # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL 1
+BIRD_EYE_PATH_1 = "case2/summer/bev_dynamic_kastelhof_summer"
 
-# Add additional query models as necessary.
+# Model_2: summer_north
+IMAGE_PATH_2 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/image_summer_all"  # INPUT HERE THE PATH TO THE FOLDER CONTAINING THE IMAGES FOR MODEL 1
+IM_LIST_2 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/summer_north/image_list_north.txt"  # OPTIONAL: add a txt file containing a list of images that should be used from IMAGE_PATH_0
+gt_cam_file_2 = f"/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/summer_north/apple-farm-20230627-north_calibrated_external_camera_parameters.txt"
+# BIRD_EYE_PATH_2 = "/home/zjw/SP/Dataset/Case_Perpendicular_View/Data_diffviews/summer_north/BEV_Kastelhof_Summer_north_gt" # INPUT HERE THE PATH TO THE BIRD EYE VIEWS (BEV) FOR MODEL 1
+BIRD_EYE_PATH_2 = "case2/summer/bev_dynamic_kastelhof_summer"
+
 
 # ----------------------------------------------------------------------------
 #                                Pipeline
 # ----------------------------------------------------------------------------
-
 # --- 0. Loading config file
-config_file = 'Apple-Farm/config/ .json' # COnfig file
+config_file = 'Apple-Farm/config/config_perpendicular_views.json'
 with open(config_file, 'r') as file:
     config = json.load(file)
 nr_batch = config["nr_models"]
@@ -68,35 +76,46 @@ create_image_batch_model1_command = [
   + (["-x_boundary", f"{config['create_image_batch_model0_command']['x_boundary']}"] if 'x_boundary' in config['create_image_batch_model0_command'] else [])
 call(create_image_batch_model1_command)
 
-# MODEL...
-
-
-# --- (Skip this step if the point cloud is already provided.) 2. Reconstruction - Colmap sparse
-colmap_cli_pipeline_command = [
+# MODEL_2
+create_image_batch_model2_command = [
     "python3",
-    "Apple-Farm/src/colmap_cli_pipeline.py",
+    "Apple-Farm/src/collect_transform_image_data.py",
     f"{PROJECT_PATH}",
-    f"{IMAGE_PATH_0}",
-    f"{IMAGE_PATH_1}",  # If multiple image paths add in the order: image path model 0, image path model 1, ...
-]
-call(colmap_cli_pipeline_command)
+    f"{IMAGE_PATH_2}",
+    config['create_image_batch_model2_command']['cluster_images'],
+] +(["-presorted_im", f"{IM_LIST_2}"] if IM_LIST_2 else []) \
+  +(["-offset"] + list(map(str, config['offset'])) if 'offset' in config and config['offset'] else []) \
+  + (["-y_boundary", f"{config['create_image_batch_model0_command']['y_boundary']}"] if 'y_boundary' in config['create_image_batch_model0_command'] else []) \
+  + (["-x_boundary", f"{config['create_image_batch_model0_command']['x_boundary']}"] if 'x_boundary' in config['create_image_batch_model0_command'] else [])
+call(create_image_batch_model2_command)
+
+
+# # --- (Skip this step given the point cloud is already provided.) 2. Reconstruction - Colmap sparse
+# colmap_cli_pipeline_command = [
+#     "python3",
+#     "Apple-Farm/src/colmap_cli_pipeline.py",
+#     f"{PROJECT_PATH}",
+#     f"{IMAGE_PATH_0}",
+#     f"{IMAGE_PATH_1}",
+#     f"{IMAGE_PATH_2}",  # If multiple image paths add in the order: image path model 0, image path model 1, ...
+# ]
+# call(colmap_cli_pipeline_command)
 
 
 # --- 3. Transform to LV95 and shift by const
 transform_shifted_LV95_command = ["python3", "Apple-Farm/src/transform_shifted_LV95.py", f"{PROJECT_PATH}"]
 call(transform_shifted_LV95_command)
 
-# camera_sequence_cut.py
 
-
-# 4. Feature Extraction Stage
+# --- 4. Feature Extraction Stage
 # 4.1 Tree positions from BEV
 tree_positions_comand = [
     "python3",
     "Apple-Farm/src/tree_positions.py",
     f"{PROJECT_PATH}",
     f"{BIRD_EYE_PATH_0}",
-    f"{BIRD_EYE_PATH_1}",  # If multiple image paths add in the order: BEV model 0, BEV model 1, ...
+    f"{BIRD_EYE_PATH_1}",
+    f"{BIRD_EYE_PATH_2}",  # If multiple image paths add in the order: BEV model 0, BEV model 1, ...
 ]+(["-cluster_rad", f"{config['tree_positions_comand']['cluster_rad']}"] if 'cluster_rad' in config['tree_positions_comand'] else []) 
 call(tree_positions_comand)
 
@@ -126,9 +145,9 @@ transform_init2gt_command = [
     "Apple-Farm/evaluation/estimation_LV95_gt_trans.py",
     f"{PROJECT_PATH}",
     "--image_lists",
-    f"{IM_LIST_0}", f"{IM_LIST_1}",
+    f"{IM_LIST_0}", f"{IM_LIST_1}", f"{IM_LIST_2}",
     "--gt_cams",
-    f"{gt_cam_file_0}", f"{gt_cam_file_1}",
+    f"{gt_cam_file_0}", f"{gt_cam_file_1}", f"{gt_cam_file_2}",
 ] +(["--offset"] + list(map(str, config['offset'])) if config['offset'] else [])
 call(transform_init2gt_command)
 
@@ -168,8 +187,8 @@ Horizontal_correctness_command = [
     f"{PROJECT_PATH}",
 ] + (["-max_tree_pair_dist", f'{config["Horizontal_correctness_command"]["max_tree_pair_dist"]}'] if 'max_tree_pair_dist' in config["Horizontal_correctness_command"] else [])
 # 7
-SAVE_INTERVALS = "1,2,10"  # "1,2,5,10" save the middle results
-for i in range(1, 6):  # 6
+SAVE_INTERVALS = "1,2,10"  # save the middle results
+for i in range(1, 6):
     call(ICP_vertical_command + [str(i), SAVE_INTERVALS])
     scaling = "True"
     call(Horizontal_correctness_command + [str(i), SAVE_INTERVALS, scaling])
@@ -213,57 +232,85 @@ cam_evaluation_command = [
 ]
 call(cam_evaluation_command)
 
-# 9.2 tree centers evaluation
-# ablation study: steps along our pipeline
+
+# 9.2 tree centers evaluation 
 TREE_CENTERS_EVAL_PATH = Path(f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/Ours/Eval")
 TREE_CENTERS_EVAL_PATH.mkdir(parents=True, exist_ok=True)
 
 for idx in range(1, nr_batch):
-    BASE_TREE = f"{PROJECT_PATH}/Correctness_loop/initial_alignment/Output/Fur_Ground_extraction/Model_0/trunk_centers.txt"
-    initial_aligned = f"{PROJECT_PATH}/Correctness_loop/initial_alignment/Output/Fur_Ground_extraction/Model_{idx}/trunk_centers.txt"
-    loop_aligned = f"{PROJECT_PATH}/Correctness_loop/2_horizontal/Output/Tree_centers/transformed_tree_pos_model_{idx}.txt"
+    tree_pairs_path = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/tree_pairs_m{idx}.txt"
+
+    BASE_TREE = (
+        f"{PROJECT_PATH}/Correctness_loop/initial_alignment/Output/Fur_Ground_extraction/Model_0/trunk_centers.txt"
+    )
+    initial_aligned = (
+        f"{PROJECT_PATH}/Correctness_loop/initial_alignment/Output/Fur_Ground_extraction/Model_{idx}/trunk_centers.txt"
+    )
+    loop_aligned = (
+        f"{PROJECT_PATH}/Correctness_loop/2_horizontal/Output/Tree_centers/transformed_tree_pos_model_{idx}.txt"
+    )
     batch_aligned = f"{PROJECT_PATH}/Correctness_loop/3_batch_align/Horizontal_correct/tree_centers_m{idx}.csv"
     co_init = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/Ours/colmap_init_tree{idx}.txt"
-
-    tree_pairs_path = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/tree_pairs_m{idx}.txt"
 
     EVAL_TREE_FILES = [co_init, initial_aligned, loop_aligned, batch_aligned]  #
 
     tree_evaluation_command = [
         "python3",
         "Apple-Farm/evaluation/trees_eval.py",
-        "--ground_truth_positions", f"{BASE_TREE}",
-        "--tree_positions", *EVAL_TREE_FILES,
-        "--tree_pair_file", f"{tree_pairs_path}",
-        "--output_path", f"{TREE_CENTERS_EVAL_PATH}",
-        "--model_index", f"{idx}",
-        "--method_names", "colmap_init", "initial aligned", "loop aligned", "batch aligned",
+        "--ground_truth_positions",
+        f"{BASE_TREE}",
+        "--tree_positions",
+        *EVAL_TREE_FILES,
+        "--tree_pair_file",
+        f"{tree_pairs_path}",
+        "--output_path",
+        f"{TREE_CENTERS_EVAL_PATH}",
+        "--model_index",
+        f"{idx}",
+        "--method_names",
+        "colmap_init",
+        "initial aligned",
+        "loop aligned",
+        "batch aligned",
     ]
     call(tree_evaluation_command)
 
-# SOTA comparison
-TREE_CENTERS_EVAL_PATH = Path(f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/Compare/Eval")
-TREE_CENTERS_EVAL_PATH.mkdir(parents=True, exist_ok=True)
+# # If needed: SOTA comparison
+# TREE_CENTERS_EVAL_PATH = Path(f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/Compare/Eval")
+# TREE_CENTERS_EVAL_PATH.mkdir(parents=True, exist_ok=True)
 
-for idx in range(1, nr_batch):
-    BASE_TREE = f"{PROJECT_PATH}/Correctness_loop/initial_alignment/Output/Fur_Ground_extraction/Model_0/trunk_centers.txt"
-    folder = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/Compare"
-    icp = f"{folder}/ICP_m{idx}.txt"
-    FGR = f"{folder}/FGR_m{idx}.txt"
-    fastICP = f"{folder}/FICP_m{idx}.txt"
-    robustICP = f"{folder}/RICP_m{idx}.txt"
-    teaser = f"{folder}/teaser_m{idx}.txt"
+# for idx in range(1, nr_batch):
+#     tree_pairs_path = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/tree_pairs_m{idx}.txt"
 
-    tree_pairs_path = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/tree_pairs_m{idx}.txt"
-    EVAL_TREE_FILES = [icp, FGR, fastICP, robustICP, teaser]
-    tree_evaluation_command = [
-        "python3",
-        "Apple-Farm/evaluation/trees_eval.py",
-        "--ground_truth_positions", f"{BASE_TREE}",
-        "--tree_positions", *EVAL_TREE_FILES,
-        "--tree_pair_file", f"{tree_pairs_path}",
-        "--output_path", f"{TREE_CENTERS_EVAL_PATH}",
-        "--model_index", f"{idx}",
-        "--method_names", "icp", "FGR", "fastICP", "robustICP", "teaser++",
-    ]
-    call(tree_evaluation_command)
+#     BASE_TREE = (
+#         f"{PROJECT_PATH}/Correctness_loop/initial_alignment/Output/Fur_Ground_extraction/Model_0/trunk_centers.txt"
+#     )
+#     folder = f"{PROJECT_PATH}/Correctness_loop/evaluation/Tree_centers_eval/Compare"
+#     icp = f"{folder}/ICP_m{idx}.txt"
+#     FGR = f"{folder}/FGR_m{idx}.txt"
+#     fastICP = f"{folder}/FICP_m{idx}.txt"
+#     robustICP = f"{folder}/RICP_m{idx}.txt"
+#     teaser = f"{folder}/teaser_m{idx}.txt"
+
+#     EVAL_TREE_FILES = [icp, FGR, fastICP, robustICP, teaser]
+#     tree_evaluation_command = [
+#         "python3",
+#         "Apple-Farm/evaluation/trees_eval.py",
+#         "--ground_truth_positions",
+#         f"{BASE_TREE}",
+#         "--tree_positions",
+#         *EVAL_TREE_FILES,
+#         "--tree_pair_file",
+#         f"{tree_pairs_path}",
+#         "--output_path",
+#         f"{TREE_CENTERS_EVAL_PATH}",
+#         "--model_index",
+#         f"{idx}",
+#         "--method_names",
+#         "icp",
+#         "FGR",
+#         "fastICP",
+#         "robustICP",
+#         "teaser++",
+#     ]
+#     call(tree_evaluation_command)

@@ -332,6 +332,16 @@ if __name__ == "__main__":
     #         f'{OUTPUT_MIDDLE_PLOT}/recalls_m1_middle{i}_H.png',
     #         f'{OUTPUT_MIDDLE_PLOT}/boxplot_m1_middle{i}_H')
 
+
+    # --- batch_entire_final
+    for idx in range(1, nr_models):
+        evaluate(
+            f'{DATA_PATH}/cam_gt_m{idx}.txt',
+            f'{DATA_PATH}/eval_m{idx}_batch_aligned.txt',
+            f'{args.output_path}/batchalign_cam_errors_m{idx}_gt.txt', 0,
+            f'{OUTPUT_PLOT}/batch_recalls_m{idx}.png',
+            f'{OUTPUT_PLOT}/batch_boxplot_m{idx}')
+
     # # -- batch process & compare
     # for i in range(nr_batches):
     #     evaluate(
@@ -351,15 +361,6 @@ if __name__ == "__main__":
 
 
     # # # ----- If needed: SOTA methods -----
-    # # # batch_entire_final
-    # for idx in range(1, nr_models):
-    #     evaluate(
-    #         f'{DATA_PATH}/cam_gt_m{idx}.txt',
-    #         f'{DATA_PATH}/eval_m{idx}_batch_aligned.txt',
-    #         f'{args.output_path}/batchalign_cam_errors_m{idx}_gt.txt', 0,
-    #         f'{OUTPUT_PLOT}/batch_recalls_m{idx}.png',
-    #         f'{OUTPUT_PLOT}/batch_boxplot_m{idx}')
-
     # # # method comparison_ ICP
     # for idx in range(1, nr_models):
     #     evaluate(

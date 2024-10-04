@@ -17,7 +17,7 @@ from sklearn.cluster import KMeans
 import matplotlib.patches as patches
 import shutil
 
-from src.colmap_vidual import colmap_to_txt
+from colmap_vidual import colmap_to_txt
 
 
 def rotate_points(points, angle):
