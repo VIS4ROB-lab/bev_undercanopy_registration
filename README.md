@@ -1,10 +1,19 @@
-# bev_undercanopy_registration
+# [IEEE - IROS24] Temporal-and Viewpoint-Invariant Registration for Under-Canopy Footage using Deep-Learning-based Bird's-Eye View Prediction
 
 ## Description
 This project proposes a new approach for registering multiple under-canopy image sequences by leveraging standard GPS data, sparse Structure from Motion, and deep-learning-based perspective-view to bird-eye view conversion. 
 
 An overview of the pipeline is shown below.
 ![Pipeline Overview](./docs/pipeline.svg)
+
+If you use our code in an academic work, please cite:
+
+      @Inproceedings{zhou2024temporal,
+        title={Temporal-and Viewpoint-Invariant Registration for Under-Canopy Footage using Deep-Learning-based Bird's-Eye View Prediction},
+        author={Zhou, Jiawei and Mascaro, Ruben and Cadena, Cesar and Chli, Margarita and Teixeira, Lucas},
+        booktitle={2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+        year={2024}
+      }
 
 ## Installation
 
