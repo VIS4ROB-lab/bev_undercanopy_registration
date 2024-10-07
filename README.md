@@ -3,10 +3,10 @@
 ## Description
 This project proposes a new approach for registering multiple under-canopy image sequences by leveraging standard GPS data, sparse Structure from Motion, and deep-learning-based perspective-view to bird-eye view conversion. 
 
-An overview of the pipeline is shown below.
+**An overview of the pipeline** is shown below.
 ![Pipeline Overview](./docs/pipeline.svg)
 
-[Click here to view the poster](path/to/poster.pdf)
+🔗 **[Click here to view the poster](docs/2024iros_poster_jiawei.pdf)**
 
 If you use our code in an academic work, please cite:
 
