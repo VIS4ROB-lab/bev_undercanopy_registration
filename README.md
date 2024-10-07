@@ -6,6 +6,8 @@ This project proposes a new approach for registering multiple under-canopy image
 An overview of the pipeline is shown below.
 ![Pipeline Overview](./docs/pipeline.svg)
 
+[Click here to view the poster](path/to/poster.pdf)
+
 If you use our code in an academic work, please cite:
 
       @Inproceedings{zhou2024temporal,
