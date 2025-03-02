@@ -45,7 +45,7 @@ The code has been tested only on Linux. Follow these steps to set up the project
 ## Preparation
 - **Data Preparation**
    
-   We need to prepare a project folder to store all outputs, images folders to store iamges sequence, images lists, BEV folders to save BEV images and GT_params for evaluation. The structure is recommended to look as follows:
+   We need to prepare a project folder to store all outputs, images folders to store images sequence, images lists, BEV folders to save BEV images and GT_params for evaluation. The structure is recommended to look as follows:
    ```yaml
    case_name:
    ├──Data_name:	
@@ -57,7 +57,7 @@ The code has been tested only on Linux. Follow these steps to set up the project
    │    └──query_models:
    │        └──...
    │
-   ├──Project_name 
+   ├──Project_name: 
    │    ├──Models: 
    │    |   ├──Model_0 (reference model)
    │    |   |   ├──sparse (point cloud, if provided)
@@ -83,7 +83,7 @@ The code has been tested only on Linux. Follow these steps to set up the project
        Script: `command_andreas.py` (Config: `config_andreas.json`)
 
     You can find the datasets here:  
-    - [Datasets for cases 1 and 2](https://drive.google.com/drive/folders/1cVXYFaNytEoAP8SAZe_uD04fEkttMI32)  
+    - [Datasets for cases 1 and 2](https://drive.google.com/drive/folders/1cVXYFaNytEoAP8SAZe_uD04fEkttMI32) , [corresponding 3d point clouds](https://zenodo.org/records/14957101)
     - [Dataset for case 3](https://zenodo.org/records/13900977?preview=1&token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjQ2ZTFkZGVlLWQ3NTAtNGFlNC04ZjA3LWQxYjI0OTE3ODU3NCIsImRhdGEiOnt9LCJyYW5kb20iOiJkZmNlNjUxZDE2Zjk1ODVkYWMwMDg5MWY3OTBhOWM0NCJ9.awfcLpwuPMO-U4c5HfSVtFnd1nUm3kvSES2pIXNQW2SpTsdXIjC-DU9VAcBeRRFNqrwgnIcs27swU6vcQyuSuw)
 
     **Instructions**
@@ -193,7 +193,7 @@ Preparation: open the point clouds in cloudcompare, segment the points in workin
 
 
 ## **Notice:** 
-Please carefully review the intermediate results to ensure everything functions correctly for your own dataset, especially the extracted features and alignment results. 
+Please carefully review the intermediate results to ensure everything functions correct for your own dataset, especially the extracted features and alignment results. 
 
 ⚙️ The explanations and definitions of important parameters can be found in `config.yaml`. You can set up your own configuration file and read it using the following code:
 ```bash
